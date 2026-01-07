@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gen Z Translator</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1 class="title">Gen Z Translator</h1>
+      <p class="subtitle">Make Gen Z slang clear and simple — perfect for parents, teachers, and pros.</p>
+    </header>
+
+    <section class="controls card">
+      <label for="input" class="sr-only">Enter Gen Z slang</label>
+      <textarea id="input" placeholder="Bro said it’s giving main character energy" rows="4"></textarea>
+      <div class="row">
+        <button id="translateBtn" class="btn primary">Translate</button>
+        <button id="clearBtn" class="btn">Clear</button>
+      </div>
+      <small class="hint">Be polite — if we need more context, we'll ask gently.</small>
+    </section>
+
+    <section id="outputArea" class="output-area"></section>
+
+    <footer class="footer">
+      <small>Built with a simple AI prompt. Keep your API key safe (don't commit it!).</small>
+    </footer>
+  </main>
+
+  <!-- Optional config.js to store your API key: window.GENZ_API_KEY = 'sk-...'; -->
+  <script src="config.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
