@@ -4,8 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Gen Z Translator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,11 +14,21 @@
     <header class="header">
       <h1 class="title">Gen Z Translator✨</h1>
       <p class="subtitle">Make Gen Z slang clear and simple — perfect for parents, teachers, and pros.</p>
+      <button id="themeToggle" class="theme-toggle">🌙</button>
     </header>
 
     <section class="controls card">
-      <label for="input" class="sr-only">Enter Gen Z slang</label>
+      <label for="input" class="input-box">Enter Gen Z slang</label>
       <textarea id="input" placeholder="Bro said it’s giving main character energy" rows="4"></textarea>
+      <p>Select your Gen-Z tone:
+        <select id="toneSelect" class="tone-select">
+          <option value="neutral">Neutral</option>
+          <option value="friendly">Friendly</option>
+          <option value="professional">Professional</option>
+          <option value="funny">Funny</option>
+        </select>
+      </p>
+
       <div class="row">
         <button id="translateBtn" class="btn primary">Translate</button>
         <button id="clearBtn" class="btn">Clear</button>
@@ -26,9 +37,10 @@
     </section>
 
     <section id="outputArea" class="output-area"></section>
+    <div class="divider"></div>
 
     <footer class="footer">
-      <small>Built with a simple AI prompt. Keep your API key safe (don't commit it!).</small>
+      <small>open to suggestions at codebyvansh@gmail.com</small>
     </footer>
   </main>
 

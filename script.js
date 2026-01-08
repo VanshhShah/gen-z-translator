@@ -6,6 +6,8 @@ const inputEl = document.getElementById('input');
 const translateBtn = document.getElementById('translateBtn');
 const clearBtn = document.getElementById('clearBtn');
 const outputArea = document.getElementById('outputArea');
+const toneSelect = document.getElementById('toneSelect');
+
 
 // No client-side API key required when using the local proxy at /translate.
 // The proxy (server.js) reads the OpenAI key from an environment variable on the server.
@@ -16,41 +18,35 @@ function makeCard(result){
   const card = document.createElement('div');
   card.className = 'output-card card';
 
-  // Header row: meaning + copy button
-  const header = document.createElement('div');
-  header.className = 'output-row';
+  card.innerHTML = `
+    <div class="result-header">
+      <span class="result-label">Meaning</span>
+      <button class="copy-btn">Copy</button>
+    </div>
 
-  const kicker = document.createElement('div');
-  kicker.innerHTML = `<div class="kicker">Meaning</div><div class="field-title">${escapeHtml(result.meaning)}</div>`;
+    <div class="result-meaning">${escapeHtml(result.meaning)}</div>
 
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'copy-btn';
-  copyBtn.textContent = 'Copy Result';
-  copyBtn.addEventListener('click', ()=>{
+    <div class="result-grid">
+      <div class="result-box">
+        <span class="result-label">Simple English</span>
+        <p>${escapeHtml(result.simple)}</p>
+      </div>
+
+      <div class="result-box">
+        <span class="result-label">Example</span>
+        <p>${escapeHtml(result.example)}</p>
+      </div>
+    </div>
+  `;
+
+  card.querySelector('.copy-btn').addEventListener('click', () => {
     const text = `Meaning: ${result.meaning}\nSimple English: ${result.simple}\nExample: ${result.example}`;
-    navigator.clipboard.writeText(text).then(()=>{
-      copyBtn.textContent = 'Copied ✓';
-      setTimeout(()=>copyBtn.textContent = 'Copy Result',1400);
-    }).catch(()=>copyBtn.textContent = 'Copy Failed');
+    navigator.clipboard.writeText(text);
   });
-
-  header.appendChild(kicker);
-  header.appendChild(copyBtn);
-  card.appendChild(header);
-
-  // Body rows
-  const simple = document.createElement('div');
-  simple.className = 'small';
-  simple.innerHTML = `<div class="kicker">Simple English</div><div>${escapeHtml(result.simple)}</div>`;
-  card.appendChild(simple);
-
-  const example = document.createElement('div');
-  example.className = 'small';
-  example.innerHTML = `<div class="kicker">Example sentence</div><div>${escapeHtml(result.example)}</div>`;
-  card.appendChild(example);
 
   return card;
 }
+
 
 // Escape HTML to avoid injection in demo code
 function escapeHtml(str){
@@ -72,11 +68,13 @@ function makeFollowUpCard(question){
 // Show a spinner on the translate button
 function setLoading(loading){
   translateBtn.disabled = loading;
-  translateBtn.innerHTML = loading ? '<span class="spinner" aria-hidden="true"></span>' : 'Translate';
+  translateBtn.innerHTML = loading ? 'Translating...' : 'Translate';
 }
 
 async function translate(){
   const text = inputEl.value.trim();
+  const tone = toneSelect.value;
+
   if(!text){
     alert('Please enter some Gen Z slang to translate.');
     return;
@@ -88,7 +86,34 @@ async function translate(){
   outputArea.innerHTML = ''; // clear previous
 
   // Prompt to instruct the AI to return simple JSON with required fields.
-  const systemMsg = `You are a friendly Gen Z slang translator for parents/teachers/professionals. Use very simple, non-judgmental language. If the phrase is ambiguous and needs more context, reply with JSON: {"needs_context": true, "followup": "short question"}. Otherwise reply with JSON: {"needs_context": false, "meaning":"short meaning","simple":"simple english","example":"one example sentence"}. Do not use slang, avoid long words.`;
+
+  const systemMsg = `
+  You are a Gen Z slang translator.
+
+  Your job is to explain Gen Z words, phrases, or sentences in very simple English
+  so that parents, teachers, and professionals can easily understand.
+
+  Tone rules:
+  - Use a ${tone} tone
+  - Be clear, friendly, and non-judgmental
+  - Do NOT use Gen Z slang in explanations
+  - Avoid long or complex words
+
+  Output rules:
+  - If the meaning is unclear, respond ONLY with valid JSON:
+    { "needs_context": true, "followup": "short polite question" }
+
+  - Otherwise respond ONLY with valid JSON:
+    {
+      "needs_context": false,
+      "meaning": "short meaning",
+      "simple": "simple English sentence",
+      "example": "one short example sentence"
+    }
+
+  Do not include anything outside JSON.
+`;
+
   const userMsg = `Translate this: "${text}"`;
 
   try{
@@ -152,5 +177,15 @@ clearBtn.addEventListener('click', ()=>{ inputEl.value = ''; outputArea.innerHTM
 
 // Allow press Ctrl+Enter to Translate
 inputEl.addEventListener('keydown', (e)=>{ if((e.ctrlKey||e.metaKey) && e.key === 'Enter') translate(); });
+
+inputEl.focus();
+
+const themeToggle = document.getElementById('themeToggle');
+
+themeToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  themeToggle.textContent =
+    document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
 
 // End of script.js
