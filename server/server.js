@@ -1,0 +1,56 @@
+require('dotenv').config();
+
+console.log("🔥 THIS SERVER.JS IS RUNNING");
+
+const express = require('express');
+const cors = require('cors');
+
+
+const app = express();
+
+// ✅ CORS MUST BE BEFORE ROUTES
+app.use(cors());
+app.use(express.json());
+
+const OPENAI_KEY = process.env.OPENAI_API_KEY;
+
+// ✅ HEALTH CHECK ROUTE (FOR DEBUGGING)
+app.get('/health', (req, res) => {
+  res.send('OK');
+});
+
+// ✅ TRANSLATE ROUTE
+app.post('/translate', async (req, res) => {
+  try {
+    const prompt = req.body.prompt;
+
+    if (!prompt) {
+      return res.status(400).json({ error: 'No prompt provided' });
+    }
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${OPENAI_KEY}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: prompt,
+        temperature: 0.1,
+        max_tokens: 400,
+      }),
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Proxy listening on http://localhost:${PORT}`);
+});

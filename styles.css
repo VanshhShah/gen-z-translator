@@ -36,7 +36,11 @@ body{
 .field-title{font-weight:700;margin:6px 0}
 .copy-btn{background:transparent;border:1px dashed #e9e9f7;padding:6px 8px;border-radius:8px;color:var(--muted);cursor:pointer}
 .small{font-size:0.9rem;color:#111827}
-.sr-only{position:absolute;left:-9999px}
+.sr-only {
+  position:absolute;left:-9999px;
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--glass);}
 /* Responsive */
 @media(min-width:640px){
   .title{font-size:1.75rem}

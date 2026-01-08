@@ -7,10 +7,9 @@ const translateBtn = document.getElementById('translateBtn');
 const clearBtn = document.getElementById('clearBtn');
 const outputArea = document.getElementById('outputArea');
 
-// Helper: get API key from window (optional file config.js creating window.GENZ_API_KEY)
-function getApiKey(){
-  return window.GENZ_API_KEY || '';
-}
+// No client-side API key required when using the local proxy at /translate.
+// The proxy (server.js) reads the OpenAI key from an environment variable on the server.
+// This avoids exposing your OpenAI key in the browser.
 
 // Create an output card given the result object
 function makeCard(result){
@@ -83,12 +82,7 @@ async function translate(){
     return;
   }
 
-  const apiKey = getApiKey();
-  if(!apiKey){
-    const proceed = confirm('No API key found. Would you like to open the README to see how to add one?');
-    if(proceed) window.open('README.md','_blank');
-    return;
-  }
+  // Using local proxy at http://localhost:3000/translate — no client API key required.
 
   setLoading(true);
   outputArea.innerHTML = ''; // clear previous
@@ -98,19 +92,17 @@ async function translate(){
   const userMsg = `Translate this: "${text}"`;
 
   try{
-    const resp = await fetch('https://api.openai.com/v1/chat/completions',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':`Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages:[{role:'system',content:systemMsg},{role:'user',content:userMsg}],
-        max_tokens:400,
-        temperature:0.1
-      })
-    });
+    const resp = await fetch('http://localhost:3000/translate', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    prompt: [
+      { role: 'system', content: systemMsg },
+      { role: 'user', content: userMsg }
+    ]
+  })
+});
+
 
     if(!resp.ok){
       const errText = await resp.text();
