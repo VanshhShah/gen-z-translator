@@ -61,7 +61,12 @@ body{
 }
 
 .controls textarea {
-  width:100%;border:1px solid #e6e9ef;border-radius:12px;padding:12px;font-size:1rem;resize:vertical;
+  width:100%;
+  border:1px solid #e6e9ef;
+  border-radius:12px;
+  padding:12px;
+  font-size:1rem;
+  resize:vertical;
 }
 
 .tone-select {
@@ -92,7 +97,7 @@ body{
 
 .btn.primary {
   cursor: pointer;
-  background:linear-gradient(90deg,var(--accent),#574bdb);
+  background:linear-gradient(90deg, var(--accent), #574bdb);
   color:white;
   box-shadow:0 6px 12px rgba(108,92,231,0.14);
   transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -174,13 +179,15 @@ body{
   border-color: var(--accent);
   box-shadow: 0 0 0 4px var(--glass);
 }
+
 /* Responsive */
 @media(min-width:640px){
   .title{font-size:1.75rem}
   .row{justify-content:flex-start}
   .btn{flex:0 0 auto}
 }
-/* Simple loading spinner */
+
+/* loading */
 .spinner {
   width:18px;
   height:18px;

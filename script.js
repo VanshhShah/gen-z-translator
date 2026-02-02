@@ -1,7 +1,3 @@
-// Gen Z Translator - script.js
-// Beginner-friendly JavaScript with comments.
-// NOTE: For security, do NOT commit your real API key. See README.
-
 const inputEl = document.getElementById('input');
 const translateBtn = document.getElementById('translateBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -46,7 +42,6 @@ function makeCard(result){
 
   return card;
 }
-
 
 // Escape HTML to avoid injection in demo code
 function escapeHtml(str){
@@ -129,10 +124,10 @@ async function translate(){
 });
 
 
-    if(!resp.ok){
-      const errText = await resp.text();
-      throw new Error('API Error: '+errText);
-    }
+if(!resp.ok){
+  const errText = await resp.text();
+  throw new Error('API Error: '+errText);
+}
 
     const data = await resp.json();
     const raw = data.choices?.[0]?.message?.content || '';
