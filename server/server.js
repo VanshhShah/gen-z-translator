@@ -1,4 +1,6 @@
 require('dotenv').config();
+console.log('OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
+
 
 console.log("🔥 THIS SERVER.JS IS RUNNING");
 
