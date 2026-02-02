@@ -35,7 +35,7 @@ app.post('/translate', async (req, res) => {
         Authorization: `Bearer ${OPENAI_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-3.5-turbo',
         messages: prompt,
         temperature: 0.1,
         max_tokens: 400,
@@ -43,7 +43,17 @@ app.post('/translate', async (req, res) => {
     });
 
     const data = await response.json();
-    res.json(data);
+
+if (!response.ok) {
+  console.error('OpenAI API error:', data);
+  return res.status(500).json({
+    error: 'OpenAI API error',
+    details: data
+  });
+}
+
+res.json(data);
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
