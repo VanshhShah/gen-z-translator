@@ -107,6 +107,13 @@ async function translate(){
     }
 
   Do not include anything outside JSON.
+
+  IMPORTANT:
+- Respond with ONLY valid JSON.
+- Do NOT include explanations, markdown, or extra text.
+- Do NOT wrap the JSON in backticks.
+- The response must start with { and end with }.
+
 `;
 
   const userMsg = `Translate this: "${text}"`;
@@ -132,16 +139,19 @@ if(!resp.ok){
     const data = await resp.json();
     const raw = data.choices?.[0]?.message?.content || '';
 
-    // Try to parse JSON from the model's output. Some models include backticks or text—be tolerant.
-    const maybeJson = raw.replaceAll('\n',' ').replace(/```json\s*|```/g,'').trim();
-    let parsed;
-    try{ parsed = JSON.parse(maybeJson); }
-    catch(e){
-      // If parsing fails, try to find first {..} substring
-      const match = raw.match(/\{[\s\S]*\}/);
-      if(match) parsed = JSON.parse(match[0]);
-      else throw new Error('Could not parse model output as JSON: ' + raw.substring(0,300));
-    }
+let parsed;
+try {
+  // Try direct JSON parse
+  parsed = JSON.parse(raw);
+} catch {
+  // Fallback: extract first JSON block
+  const match = raw.match(/\{[\s\S]*\}/);
+  if (!match) {
+    throw new Error('Model did not return valid JSON');
+  }
+  parsed = JSON.parse(match[0]);
+}
+
 
     if(parsed.needs_context){
       const card = makeFollowUpCard(parsed.followup || 'Could you share a little more about the situation?');
