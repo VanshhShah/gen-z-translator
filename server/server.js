@@ -12,8 +12,12 @@ const cors = require('cors');
 const app = express();
 
 // ✅ CORS MUST BE BEFORE ROUTES
-app.use(cors());
-app.use(express.json());
+const cors = require('cors');
+app.use(cors({
+  origin: '*',
+  methods: ['POST', 'GET'],
+}));
+
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
