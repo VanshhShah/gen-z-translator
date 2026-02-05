@@ -1,4 +1,5 @@
 require('dotenv').config();
+console.log('TEST_ENV value:', process.env.TEST_ENV);
 console.log('OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
 
 
