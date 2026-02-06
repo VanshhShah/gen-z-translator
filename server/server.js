@@ -8,18 +8,15 @@ console.log("🔥 THIS SERVER.JS IS RUNNING");
 const express = require('express');
 const cors = require('cors');
 
-
 const app = express();
 
 // ✅ CORS MUST BE BEFORE ROUTES
-const cors = require('cors');
 
 app.use(cors({
   origin: 'https://genz-talks.netlify.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
