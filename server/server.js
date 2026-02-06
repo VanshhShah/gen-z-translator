@@ -26,7 +26,7 @@ app.options('*', cors(corsOptions)); // ✅ PREVENTS PREFLIGHT FAILURES
 // ✅ REQUIRED FOR req.body
 app.use(express.json());
 
-const OPENAI_KEY = process.env.OPENAI_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 // ✅ HEALTH CHECK
 app.get('/health', (req, res) => {
@@ -42,19 +42,24 @@ app.post('/translate', async (req, res) => {
       return res.status(400).json({ error: 'No prompt provided' });
     }
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    if (!GROQ_API_KEY) {
+  return res.status(500).json({ error: 'Groq API key missing' });
+}
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${OPENAI_KEY}`,
+        Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
+        model: 'llama3-70b-8192',
         messages: prompt,
         temperature: 0.1,
         max_tokens: 400,
       }),
     });
+
 
     const data = await response.json();
 
