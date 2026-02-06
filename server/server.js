@@ -35,7 +35,7 @@ app.post('/translate', async (req, res) => {
     const prompt = req.body.prompt;
 
     if (!prompt) {
-      return res.status(400).json({ error: 'No prompt provided' });
+      return res.status(500).json({ error: 'AI service is temporarily unavailable. Please try again later.' });
     }
 
     if (!GROQ_API_KEY) {
