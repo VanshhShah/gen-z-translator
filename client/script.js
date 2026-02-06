@@ -119,7 +119,7 @@ async function translate(){
   const userMsg = `Translate this: "${text}"`;
 
   try{
-    const resp = await fetch('https://gen-z-translator-backend.onrender.com/translate', {
+    const resp = await fetch('https://gen-z-translator.onrender.com', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
