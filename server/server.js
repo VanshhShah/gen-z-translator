@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 console.log('TEST_ENV value:', process.env.TEST_ENV);
-console.log('OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
+console.log('GROQ_API_KEY exists:', !!process.env.GROQ_API_KEY);
 console.log('🔥 THIS SERVER.JS IS RUNNING');
 
 const express = require('express');
