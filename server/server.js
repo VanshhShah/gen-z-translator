@@ -53,7 +53,7 @@ app.post('/translate', async (req, res) => {
         Authorization: `Bearer ${GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'llama3-8b-8192',
+        model: 'llama-3.1-8b-instant',
         messages: prompt,
         temperature: 0.1,
         max_tokens: 400,
