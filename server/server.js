@@ -1,26 +1,34 @@
 require('dotenv').config();
+
 console.log('TEST_ENV value:', process.env.TEST_ENV);
 console.log('OPENAI_API_KEY exists:', !!process.env.OPENAI_API_KEY);
-
-
-console.log("🔥 THIS SERVER.JS IS RUNNING");
+console.log('🔥 THIS SERVER.JS IS RUNNING');
 
 const express = require('express');
 const cors = require('cors');
 
+// ✅ REQUIRED FOR NODE FETCH
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
 const app = express();
 
-// ✅ CORS MUST BE BEFORE ROUTES
-
-app.use(cors({
+// ✅ CORS CONFIG (MUST BE FIRST)
+const corsOptions = {
   origin: 'https://genz-talks.netlify.app',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // ✅ PREVENTS PREFLIGHT FAILURES
+
+// ✅ REQUIRED FOR req.body
+app.use(express.json());
 
 const OPENAI_KEY = process.env.OPENAI_API_KEY;
 
-// ✅ HEALTH CHECK ROUTE (FOR DEBUGGING)
+// ✅ HEALTH CHECK
 app.get('/health', (req, res) => {
   res.send('OK');
 });
@@ -50,25 +58,22 @@ app.post('/translate', async (req, res) => {
 
     const data = await response.json();
 
-if (!response.ok) {
-  console.error('OpenAI API error:', data);
-  return res.status(500).json({
-    error: 'OpenAI API error',
-    details: data
-  });
-}
+    if (!response.ok) {
+      console.error('OpenAI API error:', data);
+      return res.status(500).json({
+        error: 'OpenAI API error',
+        details: data,
+      });
+    }
 
-res.json(data);
-
+    res.json(data);
   } catch (err) {
-    console.error(err);
+    console.error('Server error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
