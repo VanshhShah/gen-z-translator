@@ -10,35 +10,24 @@ API: https://gen-z-translator.onrender.com
 
 🧠 Features
 
-Translate Gen Z slang into clear English
+🔤 Translates Gen Z slang into easy-to-understand English
 
-Tone selection (Neutral, Friendly, Professional, Funny)
+🎭 Tone selection (Neutral, Friendly, Professional, Funny)
 
-Dark mode UI
+🌙 Dark mode toggle
 
-Copyable results
+📋 One-click copy for results
 
-Secure AI inference via backend proxy
+🔐 Secure AI calls via backend proxy (no API keys exposed)
+
+⚡ Fast, free AI inference using Groq (LLaMA-3.1)
 
 🏗 Tech Stack
 
-Frontend
+Frontend: HTML, CSS, JavaScript, Netlify (hosting)
 
-HTML, CSS, JavaScript
-
-Netlify (hosting)
-
-Backend
-
-Node.js + Express
-
-Groq API (LLaMA-3.1)
-
-Render (deployment)
+Backend: Node.js + Express, Groq API (LLaMA-3.1), Render (deployment)
 
 🔐 Architecture
-Browser (Netlify)
-   ↓
-Node.js API (Render)
-   ↓
-Groq LLM (LLaMA-3.1)
+
+Browser (Netlify) ➜ Node.js API (Render) ➜ Groq LLM (LLaMA-3.1)
