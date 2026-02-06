@@ -75,8 +75,6 @@ async function translate(){
     return;
   }
 
-  // Using local proxy at http://localhost:3000/translate — no client API key required.
-
   setLoading(true);
   outputArea.innerHTML = ''; // clear previous
 
@@ -119,7 +117,7 @@ async function translate(){
   const userMsg = `Translate this: "${text}"`;
 
   try{
-    const resp = await fetch('https://gen-z-translator.onrender.com', {
+    const resp = await fetch('https://gen-z-translator.onrender.com/translate', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
