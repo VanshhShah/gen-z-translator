@@ -13,9 +13,11 @@ const app = express();
 
 // ✅ CORS MUST BE BEFORE ROUTES
 const cors = require('cors');
+
 app.use(cors({
-  origin: '*',
-  methods: ['POST', 'GET'],
+  origin: 'https://genz-talks.netlify.app',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 
